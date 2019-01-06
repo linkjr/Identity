@@ -1,0 +1,14 @@
+﻿@model SignInViewModel
+@{
+    ViewData["Title"] = "登录";
+}
+
+<h2>SignIn</h2>
+<form method="post">
+    <div>
+        <input asp-for="Account" />
+    </div>
+    <div>
+        <input type="submit" value="登 录" />
+    </div>
+</form>

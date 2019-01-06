@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div>当前登录用户：@User.Identity.Name</div>
+            <a asp-action="signout" asp-controller="account">退出</a>
+        }
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>
