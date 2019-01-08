@@ -24,6 +24,14 @@ namespace Identity.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //如果使用[Authorize]认证，使用AddAuthentication方法需要传参(CookieAuthenticationDefaults.AuthenticationScheme)。
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/authorize/signin";
+                    options.LogoutPath = "/authorize/signout";
+                });
+
             services.AddAuthentication()
                 .AddCookie(AuthenticationSchemes.UserAuthenticationScheme, options =>
                 {
@@ -32,8 +40,8 @@ namespace Identity.Web
                 })
                 .AddCookie(AuthenticationSchemes.AdminAuthenticationScheme, options =>
                 {
-                    options.LoginPath = "/authentication/account/signin";
-                    options.LogoutPath = "/authentication/account/signout";
+                    options.LoginPath = "/authentication/signin";
+                    options.LogoutPath = "/authentication/signout";
                 });
 
             services.AddMvc();
