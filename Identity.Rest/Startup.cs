@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -16,6 +11,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Identity.Rest
 {
@@ -88,31 +88,31 @@ namespace Identity.Rest
                  //options.Authority = this.Configuration["oidc:authority"];
                  //options.Audience = this.Configuration["oidc:clientid"];
                  var key = System.Text.Encoding.ASCII.GetBytes(this.Configuration["jwt:payload:Secret"]);
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = this.Configuration["jwt:payload:iss"],
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidIssuer = this.Configuration["jwt:payload:iss"],
 
-                    ValidAudience = this.Configuration["jwt:payload:aud"],
+                     ValidAudience = this.Configuration["jwt:payload:aud"],
 
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                     IssuerSigningKey = new SymmetricSecurityKey(key),
 
 
-                    /***********************************TokenValidationParameters的参数默认值***********************************/
-                    // RequireSignedTokens = true,
-                    // SaveSigninToken = false,
-                    // ValidateActor = false,
-                    // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
-                    //ValidateAudience = true,
-                    //ValidateIssuer = true,
-                    // ValidateIssuerSigningKey = false,
-                    // 是否要求Token的Claims中必须包含Expires
-                    // RequireExpirationTime = true,
-                    // 允许的服务器时间偏移量
-                    // ClockSkew = TimeSpan.FromSeconds(300),
-                    // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
-                    // ValidateLifetime = true
-                };
-            });
+                     /***********************************TokenValidationParameters的参数默认值***********************************/
+                     // RequireSignedTokens = true,
+                     // SaveSigninToken = false,
+                     // ValidateActor = false,
+                     // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
+                     //ValidateAudience = true,
+                     //ValidateIssuer = true,
+                     // ValidateIssuerSigningKey = false,
+                     // 是否要求Token的Claims中必须包含Expires
+                     // RequireExpirationTime = true,
+                     // 允许的服务器时间偏移量
+                     // ClockSkew = TimeSpan.FromSeconds(300),
+                     // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
+                     // ValidateLifetime = true
+                 };
+             });
 
             #endregion
 
@@ -146,8 +146,12 @@ namespace Identity.Rest
             app.UseMvc();
 
 
-            app.UseSwagger(options => options.PreSerializeFilters.Add((swagger, httpReq) => swagger.Host = httpReq.Host.Value));
-            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs"));
+            app.UseSwagger(options => options.PreSerializeFilters.Add((swagger, httpReq) => swagger.Host = httpReq.Host.Value))
+                .UseSwaggerUI(options =>
+                {
+                    options.RoutePrefix = string.Empty;
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
+                });
         }
     }
 }
